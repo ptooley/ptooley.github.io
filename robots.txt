@@ -1,0 +1,4 @@
+Sitemap: https://acceleratedscience.net/sitemapindex.xml
+
+User-Agent: *
+Host: acceleratedscience.net

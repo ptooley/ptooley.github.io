@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html prefix="
+og: http://ogp.me/ns#
+article: http://ogp.me/ns/article#
+" lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Adventures in Scientific Computing">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Accelerated Science</title>
+<link href="assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<link href="assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
+<link rel="canonical" href="https://acceleratedscience.net/">
+<!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><link rel="prefetch" href="blog/adventofcode-day-3-spiral-memory/" type="text/html">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://acceleratedscience.net/">
+
+                <span id="blog-title">Accelerated Science</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="archive.html">Archive</a>
+                </li>
+<li>
+<a href="categories/">Tags</a>
+                </li>
+<li>
+<a href="rss.xml">RSS feed</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right"></ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+    
+    
+<div class="postindex">
+    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="blog/adventofcode-day-3-spiral-memory/" class="u-url">AdventOfCode Day 3 - Spiral Memory</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                Phil Tooley
+            </span></p>
+            <p class="dateline"><a href="blog/adventofcode-day-3-spiral-memory/" rel="bookmark"><time class="published dt-published" datetime="2017-12-03T12:26:19Z" title="2017-12-03 12:26">2017-12-03 12:26</time></a></p>
+        </div>
+    </header><div class="e-content entry-content">
+    <div tabindex="-1" id="notebook" class="border-box-sizing">
+    <div class="container" id="notebook-container">
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Advent-of-Code-Day-3---Spiral-Memory">Advent of Code Day 3 - Spiral Memory<a class="anchor-link" href="blog/adventofcode-day-3-spiral-memory/#Advent-of-Code-Day-3---Spiral-Memory">¶</a>
+</h2>
+<h6 id="AKA.-&quot;I'm-afraid-we-need-to-use-Math!&quot;1">AKA. "I'm afraid we need to use Math!"<sup>1</sup><a class="anchor-link" href="blog/adventofcode-day-3-spiral-memory/#AKA.-%22I'm-afraid-we-need-to-use-Math!%221">¶</a>
+</h6>
+<p>Today's (2017/12/03) advent of code puzzle is an interesting one, the first half which can be elegantly solved by applying a little mathematics instead of resorting to brute force.</p>
+<p>The second half has no closed form analytic solution though, so we will have to write an algorithm instead.</p>
+<p>The first part of the puzzle we have been given is:</p>
+<hr>
+<h3 id="Part-1:">Part 1:<a class="anchor-link" href="blog/adventofcode-day-3-spiral-memory/#Part-1:">¶</a>
+</h3>
+<p>You come across an experimental new kind of memory stored on an infinite two-dimensional grid.</p>
+<p>Each square on the grid is allocated in a spiral pattern starting at a location marked 1 and then counting up while spiraling outward. For example, the first few squares are allocated like this:</p>
+
+<pre><code>17  16  15  14  13
+18   5   4   3  12
+19   6   1   2  11
+20   7   8   9  10
+21  22  23---&gt; ...
+
+</code></pre>
+<p>While this is very space-efficient (no squares are skipped), requested data must be carried back to square 1 (the location of the only access port for this memory system) by programs that can only move up, down, left, or right. They always take the shortest path: the Manhattan Distance between the location of the data and square 1.</p>
+<p>For example:</p>
+
+<pre><code>Data from square 1 is carried 0 steps, since it's at the access port.
+Data from square 12 is carried 3 steps, such as: down, left, left.
+Data from square 23 is carried only 2 steps: up twice.
+Data from square 1024 must be carried 31 steps.
+
+</code></pre>
+<p>How many steps are required to carry the data from the square identified in your puzzle input all the way to the access port?</p>
+<hr>
+<p>This is an interesting little problem which you might have guessed is going to involve square numbers, specifically the squares of all the odd numbers.</p>
+<p>We can split it into two steps, first, given a number, we need to know where it is in the grid.  Then we need to find how far it is from that position back to the position of element 1.</p>
+<p>Starting with the position of a given number, lets look at the size of the grid is related to the total number of elements in it. The sizes of the grid increase by two each time, adding a row top and bottom, and left and right, starting from $1\times1$ to $3\times3$ to $5\times5$ and so on. Meanwhile the total number of elements is the number of rows multiplied by the number of columns. So we can see that the total number of elements in grids of increasing size is the sequence of squares of the odd numbers.</p>
+<p>So can we use this to find an expression for which ring of the spiral a number is in? Starting with the $3\times3$ grid, lets take the square root of all the numbers:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">memory_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([[</span> <span class="mf">17.</span><span class="p">,</span>  <span class="mf">16.</span><span class="p">,</span>  <span class="mf">15.</span><span class="p">,</span>  <span class="mf">14.</span><span class="p">,</span>  <span class="mf">13.</span><span class="p">],</span>
+                <span class="p">[</span> <span class="mf">18.</span><span class="p">,</span>   <span class="mf">5.</span><span class="p">,</span>   <span class="mf">4.</span><span class="p">,</span>   <span class="mf">3.</span><span class="p">,</span>  <span class="mf">12.</span><span class="p">],</span>
+                <span class="p">[</span> <span class="mf">19.</span><span class="p">,</span>   <span class="mf">6.</span><span class="p">,</span>   <span class="mf">1.</span><span class="p">,</span>   <span class="mf">2.</span><span class="p">,</span>  <span class="mf">11.</span><span class="p">],</span>
+                <span class="p">[</span> <span class="mf">20.</span><span class="p">,</span>   <span class="mf">7.</span><span class="p">,</span>   <span class="mf">8.</span><span class="p">,</span>   <span class="mf">9.</span><span class="p">,</span>  <span class="mf">10.</span><span class="p">],</span>
+                <span class="p">[</span> <span class="mf">21.</span><span class="p">,</span>  <span class="mf">22.</span><span class="p">,</span>  <span class="mf">23.</span><span class="p">,</span>  <span class="mf">24.</span><span class="p">,</span>  <span class="mf">25.</span><span class="p">]])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">memory_grid</span><span class="p">))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[[ 4.12310563  4.          3.87298335  3.74165739  3.60555128]
+ [ 4.24264069  2.23606798  2.          1.73205081  3.46410162]
+ [ 4.35889894  2.44948974  1.          1.41421356  3.31662479]
+ [ 4.47213595  2.64575131  2.82842712  3.          3.16227766]
+ [ 4.58257569  4.69041576  4.79583152  4.89897949  5.        ]]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>And compare this to what we want for the $3\times3$ grid:
+    2 2 2 2 2
+    2 1 1 1 2
+    2 1 0 1 2
+    2 1 1 1 2
+    2 2 2 2 2</p>
+<p>which we number from zero because it is how we do things in Python ;)</p>
+<p>Looking at the bottom right of the grid above we see that the maximum square root in each ring is actually giving us the number of elements in the row and column of its ring.  This is easy to convert into the number of the ring, because as we have already seen we add two at each step, starting from one, so to get from the number of elements to the number of the ring we need to just subtract one and divide by two:</p>
+$$
+n_\mathrm{ring} = \frac{n_\mathrm{row,col} - 1}{2}
+$$<p>First though, to be able to do it for any number we need to fix the rest of the entries in our square rooted grid above. Looking again at the results we can see that in each ring we need to round up to the next odd number.  This can be done by rounding up to the next integer, dividing by two, rounding to the nearest integer, then multiplying by two and adding one.</p>
+$$
+n_\mathrm{next\ odd} = \mathrm{round}(\mathrm{ceil}(x)/2) * 2 + 1
+$$<p>Combining this with the operation to convert a row size into a ring number we see that we will just undo the adding of one and multiplication by two and so to get the ring number of any location $x$ in the spiral grid we have</p>
+$$
+n_\mathrm{ring}(x) = \mathrm{round}(ceil(\sqrt{x})/2).
+$$<p>The division and rounding can be done in one operation thanks to python's integer division operator '//':</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [21]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ring_no</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">memory_grid</span><span class="p">))</span><span class="o">//</span><span class="mi">2</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ring_no</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[[ 2.  2.  2.  2.  2.]
+ [ 2.  1.  1.  1.  2.]
+ [ 2.  1.  0.  1.  2.]
+ [ 2.  1.  1.  1.  2.]
+ [ 2.  2.  2.  2.  2.]]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now we have the ring number, we need to work out where in the ring the number occurs.  Looking back to the example we are given we see that each ring is indeed starting from the second from bottom cell on the right hand side.  This is slightly annoying but not a disaster.</p>
+<p>We could go through the process of finding a coordinate relative to the centre of the grid, but to get the number we are looking for that is not necessary. Because movement is limited to the four cardinal directions, the distance from any point to the centre of the grid is given by the <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Taxicab Metric</a>, which is the sum of the distance moved in the up-down and left-right directions.</p>
+<p>Looking at the grid again we can see that for the numbers in the middle of a row or column, they are already lined up with the centre in one of the two directions. Therefore they need only move in the other direction, and the distance to the centre is equal to the number of the ring that they are on.</p>
+<p>For any other element we then only need to work out how far it is from the centre of one of the sides of its ring, and add this to the number of the ring to get the distance to the centre.  (Note that this is the shortest path, but not the only shortest path, because of the particular way that the taxicab geometry works.  This is a fascinating subject in its own right and the wikipedia page is definitely work at least a skim.)</p>
+<p>So to find the distance a given element is from the centre of an edge of its ring we start by numbering around the ring starting from a corner.  This can be expressed by subtracting the size of the grid inside the ring which is $(2n-1)^2$, and then taking the modulus of the position number with the total number of elements in the ring $4*(2n-1) + 4$.</p>
+<p>Unfortunately this will cause a division by zero if we try to compute the offset of the centre cell, but since this is a special case anyway, we will not worry about that and carry on.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [22]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">offsets</span> <span class="o">=</span> <span class="p">(</span><span class="n">memory_grid</span> <span class="o">-</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">ring_no</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">ring_no</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="mi">4</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">offsets</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[[  8.   7.   6.   5.   4.]
+ [  9.   4.   3.   2.   3.]
+ [ 10.   5.  nan   1.   2.]
+ [ 11.   6.   7.   0.   1.]
+ [ 12.  13.  14.  15.   0.]]
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/usr/lib64/python3.5/site-packages/ipykernel_launcher.py:1: RuntimeWarning: invalid value encountered in remainder
+  """Entry point for launching an IPython kernel.
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>At this point we don't actually care what side the element is on, just its distance from the nearest centre of a side. Currently we have calculated the distance from the bottom right corner, we can instead calculate the distance from the nearest corner by taking the modulus of this result with the distance between corners, which is twice the ring number $2n$.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [23]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">side_offsets</span> <span class="o">=</span> <span class="n">offsets</span><span class="o">%</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">ring_no</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">side_offsets</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[[  0.   3.   2.   1.   0.]
+ [  1.   0.   1.   0.   3.]
+ [  2.   1.  nan   1.   2.]
+ [  3.   0.   1.   0.   1.]
+ [  0.   1.   2.   3.   0.]]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We see that the furthest distance an element can be from the centre of an edge of its ring is the number of moves from the middle to the corner, which is given by half the side length minus 1. Conveniently, this is just the ring number. Subtracting this, and taking the absolute value we finally  get our expression for the distance from the centre of a side:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [26]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">side_distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">side_offsets</span> <span class="o">-</span> <span class="n">ring_no</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">side_distance</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[[  2.   1.   0.   1.   2.]
+ [  1.   1.   0.   1.   1.]
+ [  0.   0.  nan   0.   0.]
+ [  1.   1.   0.   1.   1.]
+ [  2.   1.   0.   1.   2.]]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Finally we add this to the ring number to get the taxicab metric distance of each point to the centre:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [27]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">side_distance</span> <span class="o">+</span> <span class="n">ring_no</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[[  4.   3.   2.   3.   4.]
+ [  3.   2.   1.   2.   3.]
+ [  2.   1.  nan   1.   2.]
+ [  3.   2.   1.   2.   3.]
+ [  4.   3.   2.   3.   4.]]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Putting this all together we can finally write a function to take grid positions and output the distance to the grid centre:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [28]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">spiral_grid_distance</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">ring_no</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="p">))</span><span class="o">//</span><span class="mi">2</span>
+    <span class="n">ring_offset</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">ring_no</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">ring_no</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">side_distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">ring_offset</span><span class="o">%</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">ring_no</span><span class="p">)</span> <span class="o">-</span> <span class="n">ring_no</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">ring_no</span> <span class="o">+</span> <span class="n">side_distance</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>And calculate our answer for the puzzle, in my case the input is 325489</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [57]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> spiral_grid_distance(325489)
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>The slowest run took 7.05 times longer than the fastest. This could mean that an intermediate result is being cached.
+100000 loops, best of 3: 4.88 µs per loop
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Checking the timing we have no problems with being done within the half millisecond we have to complete this puzzle.  Although this is no exactly a surprise given we are doing just a few operations on a single number.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Part-2:">Part 2:<a class="anchor-link" href="blog/adventofcode-day-3-spiral-memory/#Part-2:">¶</a>
+</h3>
+<p>Part two, as I mentioned above, requires an algorithmic rather than purely mathemtical approach.  Here is the problem we are given:</p>
+<hr>
+<p>As a stress test on the system, the programs here clear the grid and then store the value 1 in square 1. Then, in the same allocation order as shown above, they store the sum of the values in all adjacent squares, including diagonals.</p>
+<p>So, the first few squares' values are chosen as follows:</p>
+
+<pre><code>Square 1 starts with the value 1.
+Square 2 has only one adjacent filled square (with value 1), so it also stores 1.
+Square 3 has both of the above squares as neighbors and stores the sum of their values, 2.
+Square 4 has all three of the aforementioned squares as neighbors and stores the sum of their values, 4.
+Square 5 only has the first and fourth squares as neighbors, so it gets the value 5.
+
+</code></pre>
+<p>Once a square is written, its value does not change. Therefore, the first few squares would receive the following values:</p>
+<p>147  142  133  122   59
+304    5    4    2   57
+330   10    1    1   54
+351   11   23   25   26
+362  747  806---&gt;   ...</p>
+<p>What is the first value written that is larger than your puzzle input?</p>
+<hr>
+<p>This time there is not going to be a closed form solution we can work out.  That is to say we might be able to work out an expression in terms of series expression using sums and products but we would still most likely have to write a program to compute it.  So instead I am going to use a "wall following algorithm"</p>
+<p>Specifically, I will use a "left-wall following algorithm" since this is a left hand spiral. Essentially this is summed up as "Turn left if you can, otherwise go straight until you can turn left"</p>
+<p>In order to implement this we simply keep track of where we have been, and if we can turn left into a cell we have not yet visited, we do that.</p>
+<p>There are a few restrictions on what kind of memory structure we might want to use for this. Numpy arrays are an option but we cannot grow them arbitrarily so we would have to keep stopping to resize the array, and that gets annoying.  So instead, lets use a pure python dictionary, which, along with using tuples for the keys will be an easy, if not computationally optimal way to implement the solution.</p>
+<p>Using a co-ordinate system with the starting cell at (0,0), our left wall follower looks like this:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">left_wall_follower</span><span class="p">(</span><span class="n">limit</span><span class="p">):</span>
+    <span class="n">cells</span> <span class="o">=</span> <span class="p">{(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">):</span><span class="mi">1</span><span class="p">}</span>
+    <span class="c1"># initial position</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1"># initial directions</span>
+    <span class="n">dx</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">dy</span> <span class="o">=</span> <span class="mi">0</span> 
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="c1"># update current cell</span>
+        <span class="n">csum</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># Try to sum over all directions</span>
+        <span class="k">for</span> <span class="n">sdx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">sdy</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">csum</span> <span class="o">+=</span> <span class="n">cells</span><span class="p">[(</span><span class="n">x</span><span class="o">+</span><span class="n">sdx</span><span class="p">,</span><span class="n">y</span><span class="o">+</span><span class="n">sdy</span><span class="p">)]</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="k">pass</span>
+        <span class="n">cells</span><span class="p">[(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)]</span> <span class="o">=</span> <span class="n">csum</span>
+        <span class="c1"># check if we have hit the limit</span>
+        <span class="k">if</span> <span class="n">csum</span> <span class="o">&gt;</span> <span class="n">limit</span><span class="p">:</span>
+            <span class="k">break</span>
+            
+        <span class="c1"># if not, find next potential direction</span>
+        <span class="n">dxn</span> <span class="o">=</span> <span class="o">-</span><span class="n">dy</span>
+        <span class="n">dyn</span> <span class="o">=</span> <span class="n">dx</span>
+        <span class="c1"># check if we can turn</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">lhs</span> <span class="o">=</span> <span class="n">cells</span><span class="p">[(</span><span class="n">x</span><span class="o">+</span><span class="n">dxn</span><span class="p">,</span><span class="n">y</span><span class="o">+</span><span class="n">dyn</span><span class="p">)]</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="c1"># cell not set means we can turn</span>
+            <span class="n">dx</span> <span class="o">=</span> <span class="n">dxn</span>
+            <span class="n">dy</span> <span class="o">=</span> <span class="n">dyn</span>
+
+        <span class="c1"># move to next cell and carry on</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">dx</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">dy</span>
+    
+    <span class="k">return</span><span class="p">(</span><span class="n">csum</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Note that this is not an optimal approach, as the algorithm performs brute force checks as to whether cells are empty and whether it is possible to turn.  A more efficient implementation would instead keep a track of where it was and so could "know" rather than check what cells it could read and whether it could turn.</p>
+<p>This is good enough for me though, since it is elegant(ish), readable, and for the input I am given by adventofcode:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [54]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">timeit</span> left_wall_follower(325489)
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>1000 loops, best of 3: 235 µs per loop
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We are done in less than the half millisecond I have available to solve it. :)</p>
+<p><sup>1</sup>[<a href="https://en.wikipedia.org/wiki/The_Prisoner_of_Benda">https://en.wikipedia.org/wiki/The_Prisoner_of_Benda</a>]</p>
+
+</div>
+</div>
+</div>
+    </div>
+  </div>
+
+    </div>
+    </article>
+</div>
+
+
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-yYfngbEKv4RENfGDvNUqJTqGFcKf31NJEe9OTnnMH3Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+        MathJax.Hub.Config({tex2jax: {inlineMath: [['$latex ','$'], ['\\(','\\)']]}});
+        </script>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer">
+            Contents © 2017         <a href="mailto:acceleratedsci@protonmail.ch">Phil Tooley</a> - Powered by         <a href="https://getnikola.com" rel="nofollow">Nikola</a>         
+            
+        </footer>
+</div>
+</div>
+
+            <script src="assets/js/all-nocdn.js"></script><script>$('a.image-reference:not(.islink) img:not(.islink)').parent().colorbox({rel:"gal",maxWidth:"100%",maxHeight:"100%",scalePhotos:true});</script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates -->
+</body>
+</html>
