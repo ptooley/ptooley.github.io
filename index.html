@@ -167,12 +167,15 @@ Data from square 1024 must be carried 31 steps.
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>And compare this to what we want for the $3\times3$ grid:
-    2 2 2 2 2
-    2 1 1 1 2
-    2 1 0 1 2
-    2 1 1 1 2
-    2 2 2 2 2</p>
+<p>And compare this to what we want for the $3\times3$ grid:</p>
+
+<pre><code>2 2 2 2 2
+2 1 1 1 2
+2 1 0 1 2
+2 1 1 1 2
+2 2 2 2 2
+
+</code></pre>
 <p>which we number from zero because it is how we do things in Python ;)</p>
 <p>Looking at the bottom right of the grid above we see that the maximum square root in each ring is actually giving us the number of elements in the row and column of its ring.  This is easy to convert into the number of the ring, because as we have already seen we add two at each step, starting from one, so to get from the number of elements to the number of the ring we need to just subtract one and divide by two:</p>
 $$
