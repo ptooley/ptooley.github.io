@@ -21,11 +21,11 @@ BLOG_AUTHOR = "Phil Tooley"  # (translatable)
 BLOG_TITLE = "Accelerated Science"  # (translatable)
 # This is the main URL for your site. It will be used
 # in a prominent link. Don't forget the protocol (http/https)!
-SITE_URL = "https://acceleratedscience.net/"
+SITE_URL = "https://acceleratedscience.co.uk/"
 # This is the URL where Nikola's output will be deployed.
 # If not set, defaults to SITE_URL
 # BASE_URL = "https://acceleratedscience.net/"
-BLOG_EMAIL = "acceleratedsci@protonmail.ch"
+BLOG_EMAIL = "phil.tooley@sheffield.ac.uk"
 BLOG_DESCRIPTION = "Adventures in Scientific Computing"  # (translatable)
 
 # Nikola is multilingual!
