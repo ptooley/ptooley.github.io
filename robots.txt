@@ -1,4 +1,4 @@
-Sitemap: https://acceleratedscience.net/sitemapindex.xml
+Sitemap: https://acceleratedscience.co.uk/sitemapindex.xml
 
 User-Agent: *
-Host: acceleratedscience.net
+Host: acceleratedscience.co.uk

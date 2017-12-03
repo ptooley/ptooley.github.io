@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>Accelerated Science</title><link>https://acceleratedscience.net/</link><description>Adventures in Scientific Computing</description><atom:link rel="self" href="https://acceleratedscience.net/rss.xml" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2017 &lt;a href="mailto:acceleratedsci@protonmail.ch"&gt;Phil Tooley&lt;/a&gt; </copyright><lastBuildDate>Sun, 03 Dec 2017 13:10:20 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>AdventOfCode Day 3 - Spiral Memory</title><link>https://acceleratedscience.net/blog/adventofcode-day-3-spiral-memory/</link><dc:creator>Phil Tooley</dc:creator><description>&lt;div tabindex="-1" id="notebook" class="border-box-sizing"&gt;
+<?xml-stylesheet type="text/xsl" href="assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>Accelerated Science</title><link>https://acceleratedscience.co.uk/</link><description>Adventures in Scientific Computing</description><atom:link rel="self" href="https://acceleratedscience.co.uk/rss.xml" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2017 &lt;a href="mailto:phil.tooley@sheffield.ac.uk"&gt;Phil Tooley&lt;/a&gt; </copyright><lastBuildDate>Sun, 03 Dec 2017 13:36:19 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>AdventOfCode Day 3 - Spiral Memory</title><link>https://acceleratedscience.co.uk/blog/adventofcode-day-3-spiral-memory/</link><dc:creator>Phil Tooley</dc:creator><description>&lt;div tabindex="-1" id="notebook" class="border-box-sizing"&gt;
     &lt;div class="container" id="notebook-container"&gt;
 
 &lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h2 id="Advent-of-Code-Day-3---Spiral-Memory"&gt;Advent of Code Day 3 - Spiral Memory&lt;a class="anchor-link" href="https://acceleratedscience.net/blog/adventofcode-day-3-spiral-memory/#Advent-of-Code-Day-3---Spiral-Memory"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;h6 id="AKA.-&amp;quot;I'm-afraid-we-need-to-use-Math!&amp;quot;1"&gt;AKA. "I'm afraid we need to use Math!"&lt;sup&gt;1&lt;/sup&gt;&lt;a class="anchor-link" href="https://acceleratedscience.net/blog/adventofcode-day-3-spiral-memory/#AKA.-%22I'm-afraid-we-need-to-use-Math!%221"&gt;¶&lt;/a&gt;&lt;/h6&gt;&lt;p&gt;Today's (2017/12/03) advent of code puzzle is an interesting one, the first half which can be elegantly solved by applying a little mathematics instead of resorting to brute force.&lt;/p&gt;
+&lt;h2 id="Advent-of-Code-Day-3---Spiral-Memory"&gt;Advent of Code Day 3 - Spiral Memory&lt;a class="anchor-link" href="https://acceleratedscience.co.uk/blog/adventofcode-day-3-spiral-memory/#Advent-of-Code-Day-3---Spiral-Memory"&gt;¶&lt;/a&gt;&lt;/h2&gt;&lt;h6 id="AKA.-&amp;quot;I'm-afraid-we-need-to-use-Math!&amp;quot;1"&gt;AKA. "I'm afraid we need to use Math!"&lt;sup&gt;1&lt;/sup&gt;&lt;a class="anchor-link" href="https://acceleratedscience.co.uk/blog/adventofcode-day-3-spiral-memory/#AKA.-%22I'm-afraid-we-need-to-use-Math!%221"&gt;¶&lt;/a&gt;&lt;/h6&gt;&lt;p&gt;Today's (2017/12/03) advent of code puzzle is an interesting one, the first half which can be elegantly solved by applying a little mathematics instead of resorting to brute force.&lt;/p&gt;
 &lt;p&gt;The second half has no closed form analytic solution though, so we will have to write an algorithm instead.&lt;/p&gt;
 &lt;p&gt;The first part of the puzzle we have been given is:&lt;/p&gt;
 &lt;hr&gt;
-&lt;h3 id="Part-1:"&gt;Part 1:&lt;a class="anchor-link" href="https://acceleratedscience.net/blog/adventofcode-day-3-spiral-memory/#Part-1:"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;You come across an experimental new kind of memory stored on an infinite two-dimensional grid.&lt;/p&gt;
+&lt;h3 id="Part-1:"&gt;Part 1:&lt;a class="anchor-link" href="https://acceleratedscience.co.uk/blog/adventofcode-day-3-spiral-memory/#Part-1:"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;You come across an experimental new kind of memory stored on an infinite two-dimensional grid.&lt;/p&gt;
 &lt;p&gt;Each square on the grid is allocated in a spiral pattern starting at a location marked 1 and then counting up while spiraling outward. For example, the first few squares are allocated like this:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;17  16  15  14  13
@@ -418,7 +418,7 @@ $$&lt;p&gt;The division and rounding can be done in one operation thanks to pyth
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h3 id="Part-2:"&gt;Part 2:&lt;a class="anchor-link" href="https://acceleratedscience.net/blog/adventofcode-day-3-spiral-memory/#Part-2:"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Part two, as I mentioned above, requires an algorithmic rather than purely mathemtical approach.  Here is the problem we are given:&lt;/p&gt;
+&lt;h3 id="Part-2:"&gt;Part 2:&lt;a class="anchor-link" href="https://acceleratedscience.co.uk/blog/adventofcode-day-3-spiral-memory/#Part-2:"&gt;¶&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Part two, as I mentioned above, requires an algorithmic rather than purely mathemtical approach.  Here is the problem we are given:&lt;/p&gt;
 &lt;hr&gt;
 &lt;p&gt;As a stress test on the system, the programs here clear the grid and then store the value 1 in square 1. Then, in the same allocation order as shown above, they store the sum of the values in all adjacent squares, including diagonals.&lt;/p&gt;
 &lt;p&gt;So, the first few squares' values are chosen as follows:&lt;/p&gt;
@@ -551,4 +551,4 @@ Square 5 only has the first and fourth squares as neighbors, so it gets the valu
 &lt;/div&gt;
     &lt;/div&gt;
   &lt;/div&gt;
-</description><category>adventofcode</category><category>python</category><guid>https://acceleratedscience.net/blog/adventofcode-day-3-spiral-memory/</guid><pubDate>Sun, 03 Dec 2017 12:26:19 GMT</pubDate></item></channel></rss>
+</description><category>adventofcode</category><category>python</category><guid>https://acceleratedscience.co.uk/blog/adventofcode-day-3-spiral-memory/</guid><pubDate>Sun, 03 Dec 2017 12:26:19 GMT</pubDate></item></channel></rss>

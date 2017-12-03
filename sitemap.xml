@@ -6,55 +6,39 @@
     xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <url>
-  <loc>https://acceleratedscience.net/</loc>
-  <lastmod>2017-11-18T10:55:00Z</lastmod>
+  <loc>https://acceleratedscience.co.uk/</loc>
+  <lastmod>2017-12-03T13:14:00Z</lastmod>
  </url>
  <url>
-  <loc>https://acceleratedscience.net/2017/</loc>
+  <loc>https://acceleratedscience.co.uk/2017/</loc>
   <lastmod>2017-11-17T23:45:00Z</lastmod>
  </url>
  <url>
-  <loc>https://acceleratedscience.net/archive.html</loc>
-  <lastmod>2017-12-03T13:10:00Z</lastmod>
+  <loc>https://acceleratedscience.co.uk/archive.html</loc>
+  <lastmod>2017-12-03T13:36:00Z</lastmod>
  </url>
  <url>
-  <loc>https://acceleratedscience.net/blog/</loc>
+  <loc>https://acceleratedscience.co.uk/blog/adventofcode-day-3-spiral-memory/</loc>
   <lastmod>2017-12-03T12:31:00Z</lastmod>
  </url>
  <url>
-  <loc>https://acceleratedscience.net/blog/adventofcode-day-3-spiral-memory/</loc>
-  <lastmod>2017-12-03T12:31:00Z</lastmod>
- </url>
- <url>
-  <loc>https://acceleratedscience.net/blog/hello-world/</loc>
-  <lastmod>2017-11-18T10:55:00Z</lastmod>
- </url>
- <url>
-  <loc>https://acceleratedscience.net/categories/</loc>
+  <loc>https://acceleratedscience.co.uk/categories/</loc>
   <lastmod>2017-12-03T13:00:00Z</lastmod>
  </url>
  <url>
-  <loc>https://acceleratedscience.net/categories/adventofcode/</loc>
+  <loc>https://acceleratedscience.co.uk/categories/adventofcode/</loc>
   <lastmod>2017-12-03T13:00:00Z</lastmod>
  </url>
  <url>
-  <loc>https://acceleratedscience.net/categories/python/</loc>
+  <loc>https://acceleratedscience.co.uk/categories/python/</loc>
   <lastmod>2017-12-03T13:00:00Z</lastmod>
  </url>
  <url>
-  <loc>https://acceleratedscience.net/galleries/</loc>
+  <loc>https://acceleratedscience.co.uk/galleries/</loc>
   <lastmod>2017-11-17T23:45:00Z</lastmod>
  </url>
  <url>
-  <loc>https://acceleratedscience.net/listings/</loc>
-  <lastmod>2017-11-17T23:45:00Z</lastmod>
- </url>
- <url>
-  <loc>https://acceleratedscience.net/pages/</loc>
-  <lastmod>2017-11-18T10:45:00Z</lastmod>
- </url>
- <url>
-  <loc>https://acceleratedscience.net/posts/hello-world/</loc>
+  <loc>https://acceleratedscience.co.uk/listings/</loc>
   <lastmod>2017-11-17T23:45:00Z</lastmod>
  </url>
 </urlset>

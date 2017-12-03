@@ -6,23 +6,23 @@
     xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <sitemap>
-  <loc>https://acceleratedscience.net/categories/adventofcode.xml</loc>
-  <lastmod>2017-12-03T13:09:00Z</lastmod>
+  <loc>https://acceleratedscience.co.uk/categories/adventofcode.xml</loc>
+  <lastmod>2017-12-03T13:36:00Z</lastmod>
  </sitemap>
  <sitemap>
-  <loc>https://acceleratedscience.net/categories/python.xml</loc>
-  <lastmod>2017-12-03T13:09:00Z</lastmod>
+  <loc>https://acceleratedscience.co.uk/categories/python.xml</loc>
+  <lastmod>2017-12-03T13:36:00Z</lastmod>
  </sitemap>
  <sitemap>
-  <loc>https://acceleratedscience.net/galleries/rss.xml</loc>
-  <lastmod>2017-12-03T13:09:00Z</lastmod>
+  <loc>https://acceleratedscience.co.uk/galleries/rss.xml</loc>
+  <lastmod>2017-12-03T13:36:00Z</lastmod>
  </sitemap>
  <sitemap>
-  <loc>https://acceleratedscience.net/rss.xml</loc>
-  <lastmod>2017-12-03T13:10:00Z</lastmod>
+  <loc>https://acceleratedscience.co.uk/rss.xml</loc>
+  <lastmod>2017-12-03T13:36:00Z</lastmod>
  </sitemap>
  <sitemap>
-  <loc>https://acceleratedscience.net/sitemap.xml</loc>
-  <lastmod>2017-12-03T13:10:00Z</lastmod>
+  <loc>https://acceleratedscience.co.uk/sitemap.xml</loc>
+  <lastmod>2017-12-03T13:36:00Z</lastmod>
  </sitemap>
 </sitemapindex>
