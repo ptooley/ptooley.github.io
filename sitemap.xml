@@ -15,7 +15,7 @@
  </url>
  <url>
   <loc>https://acceleratedscience.co.uk/archive.html</loc>
-  <lastmod>2017-12-03T13:36:00Z</lastmod>
+  <lastmod>2017-12-03T16:27:00Z</lastmod>
  </url>
  <url>
   <loc>https://acceleratedscience.co.uk/blog/adventofcode-day-3-spiral-memory/</loc>
@@ -23,11 +23,15 @@
  </url>
  <url>
   <loc>https://acceleratedscience.co.uk/categories/</loc>
-  <lastmod>2017-12-03T13:00:00Z</lastmod>
+  <lastmod>2017-12-03T16:08:00Z</lastmod>
  </url>
  <url>
   <loc>https://acceleratedscience.co.uk/categories/adventofcode/</loc>
   <lastmod>2017-12-03T13:00:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://acceleratedscience.co.uk/categories/mathjax/</loc>
+  <lastmod>2017-12-03T16:08:00Z</lastmod>
  </url>
  <url>
   <loc>https://acceleratedscience.co.uk/categories/python/</loc>

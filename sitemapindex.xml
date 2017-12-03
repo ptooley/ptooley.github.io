@@ -7,18 +7,22 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <sitemap>
   <loc>https://acceleratedscience.co.uk/categories/adventofcode.xml</loc>
-  <lastmod>2017-12-03T13:36:00Z</lastmod>
+  <lastmod>2017-12-03T16:27:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>https://acceleratedscience.co.uk/categories/mathjax.xml</loc>
+  <lastmod>2017-12-03T16:27:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://acceleratedscience.co.uk/categories/python.xml</loc>
-  <lastmod>2017-12-03T13:36:00Z</lastmod>
+  <lastmod>2017-12-03T16:27:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://acceleratedscience.co.uk/rss.xml</loc>
-  <lastmod>2017-12-03T13:36:00Z</lastmod>
+  <lastmod>2017-12-03T16:27:00Z</lastmod>
  </sitemap>
  <sitemap>
   <loc>https://acceleratedscience.co.uk/sitemap.xml</loc>
-  <lastmod>2017-12-03T13:40:00Z</lastmod>
+  <lastmod>2017-12-03T16:27:00Z</lastmod>
  </sitemap>
 </sitemapindex>
