@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Accelerated Science (Posts about Python)</title><link>https://acceleratedscience.co.uk/</link><description></description><atom:link rel="self" type="application/rss+xml" href="https://acceleratedscience.co.uk/categories/python.xml"></atom:link><language>en</language><copyright>Contents © 2017 &lt;a href="mailto:phil.tooley@sheffield.ac.uk"&gt;Phil Tooley&lt;/a&gt; </copyright><lastBuildDate>Mon, 04 Dec 2017 11:20:15 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>AdventOfCode Day 4 - High-Entropy Passphrases</title><link>https://acceleratedscience.co.uk/blog/adventofcode-day-4-high-entropy-passphrases/</link><dc:creator>Phil Tooley</dc:creator><description>&lt;div tabindex="-1" id="notebook" class="border-box-sizing"&gt;
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/"><channel><title>Accelerated Science (Posts about Python)</title><link>https://acceleratedscience.co.uk/</link><description></description><atom:link rel="self" href="https://acceleratedscience.co.uk/categories/python.xml" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2017 &lt;a href="mailto:phil.tooley@sheffield.ac.uk"&gt;Phil Tooley&lt;/a&gt; </copyright><lastBuildDate>Mon, 04 Dec 2017 11:26:59 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>AdventOfCode Day 4 - High-Entropy Passphrases</title><link>https://acceleratedscience.co.uk/blog/adventofcode-day-4-high-entropy-passphrases/</link><dc:creator>Phil Tooley</dc:creator><description>&lt;div tabindex="-1" id="notebook" class="border-box-sizing"&gt;
     &lt;div class="container" id="notebook-container"&gt;
 
 &lt;div class="cell border-box-sizing text_cell rendered"&gt;&lt;div class="prompt input_prompt"&gt;
@@ -276,13 +276,13 @@ Data from square 1024 must be carried 31 steps.
 &lt;p&gt;Looking at the bottom right of the grid above we see that the maximum square root in each ring is actually giving us the number of elements in the row and column of its ring.  This is easy to convert into the number of the ring, because as we have already seen we add two at each step, starting from one, so to get from the number of elements to the number of the ring we need to just subtract one and divide by two:&lt;/p&gt;
 $$
 n_\mathrm{ring} = \frac{n_\mathrm{row,col} - 1}{2}
-$$&lt;p&gt;First though, to be able to do it for any number we need to fix the rest of the entries in our square rooted grid above. Looking again at the results we can see that in each ring we need to round up to the next odd number.  This can be done by rounding up to the next integer, dividing by two, rounding to the nearest integer, then multiplying by two and adding one.&lt;/p&gt;
+$$&lt;p&gt;First though, to be able to do it for any number we need to fix the rest of the entries in our square rooted grid above. Looking again at the results we can see that in each ring we need to round up to the next odd number.  This can be done by rounding up to the next integer, dividing by two, rounding down, then multiplying by two and adding one.&lt;/p&gt;
 $$
-n_\mathrm{next\ odd} = \mathrm{round}(\mathrm{ceil}(x)/2) * 2 + 1
+n_\mathrm{next\ odd} = \mathrm{floor}(\mathrm{ceil}(x)/2) * 2 + 1
 $$&lt;p&gt;Combining this with the operation to convert a row size into a ring number we see that we will just undo the adding of one and multiplication by two and so to get the ring number of any location $x$ in the spiral grid we have&lt;/p&gt;
 $$
-n_\mathrm{ring}(x) = \mathrm{round}(ceil(\sqrt{x})/2).
-$$&lt;p&gt;The division and rounding can be done in one operation thanks to python's integer division operator '//':&lt;/p&gt;
+n_\mathrm{ring}(x) = \mathrm{floor}(\mathrm{ceil}(\sqrt{x})/2).
+$$&lt;p&gt;The division and rounding down can be done in one operation thanks to python's integer division operator '//':&lt;/p&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
