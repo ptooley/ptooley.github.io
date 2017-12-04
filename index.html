@@ -15,7 +15,7 @@ article: http://ogp.me/ns/article#
 <meta name="generator" content="Nikola (getnikola.com)">
 <link rel="alternate" type="application/rss+xml" title="RSS" href="rss.xml">
 <link rel="canonical" href="https://acceleratedscience.co.uk/">
-<!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><link rel="prefetch" href="blog/adventofcode-day-3-spiral-memory/" type="text/html">
+<!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><link rel="prefetch" href="blog/adventofcode-day-4-high-entropy-passphrases/" type="text/html">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
 </head>
 <body>
@@ -65,7 +65,225 @@ article: http://ogp.me/ns/article#
     
     
 <div class="postindex">
-    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="blog/adventofcode-day-3-spiral-memory/" class="u-url">AdventOfCode Day 3 - Spiral Memory</a></h1>
+    <article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="blog/adventofcode-day-4-high-entropy-passphrases/" class="u-url">AdventOfCode Day 4 - High-Entropy Passphrases</a></h1>
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                Phil Tooley
+            </span></p>
+            <p class="dateline"><a href="blog/adventofcode-day-4-high-entropy-passphrases/" rel="bookmark"><time class="published dt-published" datetime="2017-12-04T11:01:00Z" title="2017-12-04 11:01">2017-12-04 11:01</time></a></p>
+        </div>
+    </header><div class="e-content entry-content">
+    <div tabindex="-1" id="notebook" class="border-box-sizing">
+    <div class="container" id="notebook-container">
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Advent-of-Code-Day-4---High-Entropy-Passphrases">Advent of Code Day 4 - High-Entropy Passphrases<a class="anchor-link" href="blog/adventofcode-day-4-high-entropy-passphrases/#Advent-of-Code-Day-4---High-Entropy-Passphrases">¶</a>
+</h2>
+<h6 id="AKA.-Lets-talks-about-Sets,-baby.">AKA. Lets talks about Sets, baby.<a class="anchor-link" href="blog/adventofcode-day-4-high-entropy-passphrases/#AKA.-Lets-talks-about-Sets,-baby.">¶</a>
+</h6>
+<p>Today's (2017/12/04) <a href="http://adventofcode.com/2017/day/4">AdventOfCode</a> puzzle highlights the power of Python <a href="https://docs.python.org/3.5/library/stdtypes.html#set-types-set-frozenset">sets</a> to perform quite powerful data operations.</p>
+<p>Sets are a data structure that seem to get less love than they probably deserve, given that they provide a powerful way to manipulate unique data. I will briefly discuss the way that sets operate, and how we can use some of their properties to rapidly solve todays problem.</p>
+<hr>
+<h3 id="Part-One:">Part One:<a class="anchor-link" href="blog/adventofcode-day-4-high-entropy-passphrases/#Part-One:">¶</a>
+</h3>
+<p>A new system policy has been put in place that requires all accounts to use a passphrase instead of simply a password. A passphrase consists of a series of words (lowercase letters) separated by spaces.</p>
+<p>To ensure security, a valid passphrase must contain no duplicate words.</p>
+<p>For example:</p>
+
+<pre><code>aa bb cc dd ee is valid.
+aa bb cc dd aa is not valid - the word aa appears more than once.
+aa bb cc dd aaa is valid - aa and aaa count as different words.
+
+</code></pre>
+<p>The system's full passphrase list is available as your puzzle input. How many passphrases are valid?</p>
+<hr>
+<p>So here what we need to do is look at each "word" in an input line and check that it doesn't appear twice.  If it does appear twice, the "passphrase" is invalid.  So how can sets help us?</p>
+<p>A set is fundamentally a mathematical object which contains a set of unique items.  In mathematics this will typically be numbers but when extended to computer science it can be any object which you can test for uniqueness in some way. This post in not intended to go into great detail on the theory though, so check out the links below if you are interested in that.</p>
+<p>The python documentation says</p>
+<blockquote>
+<p>A set object is an unordered collection of distinct hashable objects. Common uses include membership testing, removing duplicates from a sequence, and computing mathematical operations such as intersection, union, difference, and symmetric difference. (For other containers see the built-in dict, list, and tuple classes, and the collections module.)</p>
+<p>Like other collections, sets support x in set, len(set), and for x in set. Being an unordered collection, sets do not record element position or order of insertion. Accordingly, sets do not support indexing, slicing, or other sequence-like behavior.</p>
+</blockquote>
+<p>Okay, that's a lot of information in a small space. Lets pull out the parts that are relevant to this problem.</p>
+<p>The most important part of a set is the word "distinct", this means that a set cannot contain the same element more than once.  We can see this in operation by taking a list with repeated elements and creating a set from that list:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">count</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"one"</span><span class="p">,</span> <span class="s2">"hahaha"</span><span class="p">,</span> <span class="s2">"two"</span><span class="p">,</span> <span class="s2">"hahaha"</span><span class="p">,</span> <span class="s2">"three"</span><span class="p">,</span> <span class="s2">"hahaha"</span><span class="p">]</span>
+<span class="n">countset</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">countset</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>{'hahaha', 'three', 'one', 'two'}
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In making a set from the list, the duplicates have been removed, but also the order appears to have been lost. For our purposes in solving this puzzle that is okay though as we only care about the presence of words, not their order.</p>
+<p>As a side note the order is not so much lost as changed by python to allow the set to be searched more efficiently, this is done by arranging the elements in a <a href="https://en.wikipedia.org/wiki/Hash_table">hash table</a> to allow easy searching for specific elements. The operations that can be performed on sets such as intersection, union, and difference make use of this because they need to rapidly look up many elements in both sets in order to check for their presence or absence.  Although the elements are in fact sorted by their hash, that hash bears no relation to what humans consider to be a sensible sort order, and so the elements appear randomised.  If order important to what you are doing, you will need a different data structure, which may be better suited to your purposes at the cost of being less efficient to perform set operations.</p>
+<p>So now we have an easy way of getting all the unique words in a passphrase we can compare the length of the set of unique words to the length of the complete list. If they match, the passphrase has no repeated words and is valid.  This can be implemented as:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">day_4_1</span><span class="p">(</span><span class="n">passphrases</span><span class="p">):</span>
+    <span class="sd">"""Take the passphrases as a list of strings and return a count of the valid ones.</span>
+<span class="sd">    """</span>
+    <span class="c1"># keep a count</span>
+    <span class="n">valid_passphrases</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1">#iterate over the list of passphrases</span>
+    <span class="k">for</span> <span class="n">passphrase</span> <span class="ow">in</span> <span class="n">passphrases</span><span class="p">:</span>
+        <span class="n">wordlist</span> <span class="o">=</span> <span class="n">passphrase</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="c1">#split the string at every whitespace (the default)</span>
+        <span class="n">wordset</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">wordlist</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">wordlist</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">wordset</span><span class="p">):</span>
+            <span class="n">valid_passphrases</span> <span class="o">+=</span> <span class="mi">1</span>
+    
+    <span class="k">return</span> <span class="n">valid_passphrases</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This is exactly what is implemented (albeit more tersely) in my <a href="https://github.com/ptooley/aocGolf">github repository of (nearly) oneliner solutions to AOC2017</a>.</p>
+<p>Part two is going to look very similar to this, with an added twist.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<hr>
+<h3 id="Part-Two:">Part Two:<a class="anchor-link" href="blog/adventofcode-day-4-high-entropy-passphrases/#Part-Two:">¶</a>
+</h3>
+<p>For added security, yet another system policy has been put in place. Now, a valid passphrase must contain no two words that are anagrams of each other - that is, a passphrase is invalid if any word's letters can be rearranged to form any other word in the passphrase.</p>
+<p>For example:</p>
+
+<pre><code>abcde fghij is a valid passphrase.
+abcde xyz ecdab is not valid - the letters from the third word can be rearranged to form the first word.
+a ab abc abd abf abj is a valid passphrase, because all letters need to be used when forming another word.
+iiii oiii ooii oooi oooo is valid.
+oiii ioii iioi iiio is not valid - any of these words can be rearranged to form any other word.
+
+</code></pre>
+<p>Under this new system policy, how many passphrases are valid?</p>
+<hr>
+<p>Now we need to look at the individual words more closely, making sure that the same set of letters is not repeated in any order.  In this case we still need to build our set of words, but first we need to make sure we have a good way of comparing them.  There are a few ways we could do this, but the most straightforward way is simply to sort each word before we compare them. Then regardless of the original order, if we have two anagrams we can be sure that after sorting they will be identical strings of letters.  This makes our second solution just one line longer than the first:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">day_4_2</span><span class="p">(</span><span class="n">passphrases</span><span class="p">):</span>
+    <span class="sd">"""Take the passphrases as a list of strings and return a count of the valid ones.</span>
+<span class="sd">    """</span>
+    <span class="c1"># keep a count</span>
+    <span class="n">valid_passphrases</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1">#iterate over the list of passphrases</span>
+    <span class="k">for</span> <span class="n">passphrase</span> <span class="ow">in</span> <span class="n">passphrases</span><span class="p">:</span>
+        <span class="n">wordlist</span> <span class="o">=</span> <span class="n">passphrase</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="c1">#split the string at every whitespace (the default)</span>
+        <span class="n">wordlist</span> <span class="o">=</span> <span class="p">[</span><span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">word</span><span class="p">))</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">wordlist</span><span class="p">]</span> <span class="c1"># sort each word and turn back into a string</span>
+        <span class="n">wordset</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">wordlist</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">wordlist</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">wordset</span><span class="p">):</span>
+            <span class="n">valid_passphrases</span> <span class="o">+=</span> <span class="mi">1</span>
+    
+    <span class="k">return</span> <span class="n">valid_passphrases</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This is only scratching the surface of the capabilities of python sets, they also have the capailities to do operations such as union, to merge two sets and discard duplicates; intersection, to find elements common to two sets; difference, to find elements of set A that are not in set B, and so on.</p>
+<p>Further reading on python sets and general information on sets:</p>
+<ul>
+<li>Python Docs: <a href="https://docs.python.org/3.5/library/stdtypes.html#set-types-set-frozenset">https://docs.python.org/3.5/library/stdtypes.html#set-types-set-frozenset</a>
+</li>
+<li>Wikibooks Tutorial: <a href="https://en.wikibooks.org/wiki/Python_Programming/Sets">https://en.wikibooks.org/wiki/Python_Programming/Sets</a>
+</li>
+<li>Mathematical Set: <a href="https://en.wikipedia.org/wiki/Set_(mathematics)">https://en.wikipedia.org/wiki/Set_(mathematics)</a>
+</li>
+<li>Computer Science Set: <a href="https://en.wikipedia.org/wiki/Set_(abstract_data_type)">https://en.wikipedia.org/wiki/Set_(abstract_data_type)</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> 
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+    </div>
+  </div>
+
+    </div>
+    </article><article class="h-entry post-text"><header><h1 class="p-name entry-title"><a href="blog/adventofcode-day-3-spiral-memory/" class="u-url">AdventOfCode Day 3 - Spiral Memory</a></h1>
         <div class="metadata">
             <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                 Phil Tooley
